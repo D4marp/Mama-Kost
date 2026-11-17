@@ -1,8 +1,9 @@
 ﻿import type { NextConfig } from "next";
+import { PHASE_DEVELOPMENT_SERVER } from "next/constants";
 
-const config: NextConfig = {
-  // Keep production builds separate from the active development preview.
-  distDir: process.env.NODE_ENV === "production" ? ".next-production" : ".next",
-};
-
-export default config;
+export default function config(phase: string): NextConfig {
+  // Vercel expects production output in .next. Isolate only the local dev server.
+  return {
+    distDir: phase === PHASE_DEVELOPMENT_SERVER ? ".next-dev" : ".next",
+  };
+}
